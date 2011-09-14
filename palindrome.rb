@@ -6,12 +6,12 @@ class Palindrome
       @spot = spot
       find_palindromes
     end
-    return "No palindromes found." if @palindromes.nil?
+    @palindromes.nil? and return "No palindromes found."
     @palindromes = @palindromes.uniq.sort_by &:size
   end
 
   def longest
-    return "You must search for and find a palindrome before you can find the longest." unless @palindromes.is_a?(Array)
+    @palindromes.is_a?(Array) or return "You must search for and find a palindrome before you can find the longest."
     @palindromes.max_by &:size
   end
   
