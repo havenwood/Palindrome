@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby
+require "rubygems"
+gem "minitest"
+require "minitest/autorun"
+require "minitest/pride"
+
 class Palindrome
   def search string
     @array = string.downcase.split ''
@@ -35,12 +40,15 @@ class Palindrome
   end
 end
 
-require 'minitest/autorun'
-
 class TestPalindrome < MiniTest::Unit::TestCase
   def setup
     @palindrome = Palindrome.new
     @text = 'FourscoreandsevenyearsagoourfaathersbroughtforthonthiscontainentanewnationconceivedinzLibertyanddedicatedtothepropositionthatallmenarecreatedequalNowweareengagedinagreahtcivilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth'
+  end
+  
+  def test_that_when_search_has_a_match_it_returns_an_array
+    result = @palindrome.search @text
+    assert_kind_of Array, result
   end
   
   def test_that_search_finds_palindromes
@@ -59,8 +67,7 @@ class TestPalindrome < MiniTest::Unit::TestCase
   end
   
   def test_that_search_does_not_loop_back_and_return_one_or_two_letter_false_positives
-    result = @palindrome.search("x0xx0x0xx0x0xx0x").all? { |word| word.length > 2 }
-    assert_equal true, result
+    assert @palindrome.search("x0xx0x0xx0x0xx0x").all? { |word| word.length > 2 }
   end
   
   def test_that_longest_finds_matching_string
