@@ -48,8 +48,13 @@ class TestPalindrome < MiniTest::Unit::TestCase
     assert_equal ["eve", "nen", "ded", "tot", "opo", "iti", "ata", "ede", "gag", "ivi", "ono", "nyn", "epe", "nun", "oco", "ewe", "asa", "hoh", "ere", "ehe", "ese", "ara", "dad", "lll", "nin", "eme", "mem", "tit", "did", "ini", "hth", "ofo", "ala", "illli", "hereh", "anyna", "heseh", "ranynar"], result
   end
   
-  def test_that_search_handles_no_matches
+  def test_that_search_responds_when_none_found
     result = @palindrome.search "nopalindromesinthisstring"
+    assert_equal "No palindromes found.", result
+  end
+  
+  def test_that_search_responds_to_empty_string
+    result = @palindrome.search ""
     assert_equal "No palindromes found.", result
   end
   
@@ -63,7 +68,7 @@ class TestPalindrome < MiniTest::Unit::TestCase
     assert_equal "ranynar", @palindrome.longest
   end
 
-  def test_that_longest_on_an_empty_array_plays_nice
+  def test_that_longest_responds_without_search
     assert_equal "You must search for and find a palindrome before you can find the longest.", @palindrome.longest
   end
 end
