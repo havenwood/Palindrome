@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require "rubygems"
 gem "minitest"
 require "minitest/autorun"
 require "minitest/pride"
@@ -128,6 +127,6 @@ class TestPalindrome < MiniTest::Unit::TestCase
   end
 
   def test_that_longest_responds_without_search
-    assert_equal "You must search for palindromes before you can find the longest.", @palindrome.longest
+    assert_match /search for palindromes before/, @palindrome.longest
   end
 end
