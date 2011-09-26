@@ -13,6 +13,9 @@ module PalindromeFinder
   private
   
   def initialize_palindromes string
+    unless string.is_a?(String)
+      raise ArgumentError, "expected String, recieved #{string.class}"
+    end
     @array = string.downcase.gsub(/[^0-9a-z]/, '').split ''
     @@palindromes = []
   end
@@ -125,5 +128,10 @@ class TestPalindrome < MiniTest::Unit::TestCase
   def test_that_search_does_not_loop_past_end_of_array_for_false_positive
     result = Palindrome.search "yetteyaha"
     assert_equal ["aha", "ette", "yettey"], result
+  end
+  
+  def test_that_search_detects_numeric_palindromes
+    result = Palindrome.search "49012345432183"
+    assert_equal ["454", "34543", "2345432", "123454321"], result
   end
 end
