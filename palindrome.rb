@@ -13,7 +13,7 @@ module PalindromeFinder
   private
   
   def initialize_palindromes string
-    unless string.is_a?(String)
+    unless string.is_a? String
       raise ArgumentError, "expected String, recieved #{string.class}"
     end
     @array = string.downcase.gsub(/[^0-9a-z]/, '').split ''
