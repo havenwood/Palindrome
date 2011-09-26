@@ -3,36 +3,42 @@ gem "minitest"
 require "minitest/autorun"
 require "minitest/pride"
 
-class Palindrome
+module PalindromeFinder
   def search string
-    @array = string.gsub(/[^0-9a-z ]/i, '').gsub(' ', '').downcase.split ''
-    @palindromes = []
+    initialize_palindromes string
     find_palindromes
-    @palindromes.empty? and return "No palindromes found."
-    @palindromes = @palindromes.uniq.sort.sort_by &:size
-  end
-
-  def longest
-    @palindromes.is_a?(Array) or return "You must search for palindromes before you can find the longest."
-    @palindromes.empty? and return "You must find a palindrome before the longest can be determined."
-    @palindromes.max_by &:size
+    return_palindromes
   end
 
   private
-
+  
+  def initialize_palindromes string
+    unless string.is_a?(String)
+      raise ArgumentError, "expected String, recieved #{string.class}"
+    end
+    @array = string.downcase.gsub(/[^0-9a-z]/, '').split ''
+    @@palindromes = []
+  end
+  
   def find_palindromes
     @array.size.times do |spot|
       @spot = spot
-      @palindromes = @palindromes
       find_even_palindromes
       find_odd_palindromes      
     end
   end
   
+  def return_palindromes
+    return "No palindromes found." if @@palindromes.empty?
+    @@palindromes.uniq.sort.sort_by &:size
+  end
+  
   def find_even_palindromes
     @reach = 1
     while @array[looking_here_before] == @array[looking_forward]
-      @palindromes << @array[looking_here_before, @reach * 2].join unless @reach == 1 || looking_here_before < 0
+      unless looking_here_before < 0 || @reach == 1
+        @@palindromes << @array[looking_here_before, @reach * 2].join
+      end
       @reach += 1
     end
   end
@@ -40,7 +46,9 @@ class Palindrome
   def find_odd_palindromes
     @reach = 1
     while @array[looking_back] == @array[looking_forward]
-      @palindromes << @array[looking_back, 1 + @reach * 2].join unless looking_back < 0
+      unless looking_back < 0
+        @@palindromes << @array[looking_back, @reach * 2 + 1].join
+      end
       @reach += 1
     end
   end
@@ -56,77 +64,74 @@ class Palindrome
   def looking_here_before
     @spot - @reach + 1
   end
-  
 end
+
+class Palindrome; end
+Palindrome.extend PalindromeFinder
 
 class TestPalindrome < MiniTest::Unit::TestCase
   def setup
-    @palindrome = Palindrome.new
     @text = 'FourscoreandsevenyearsagoourfaathersbroughtforthonthiscontainentanewnationconceivedinzLibertyanddedicatedtothepropositionthatallmenarecreatedequalNowweareengagedinagreahtcivilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth'
   end
   
   def test_that_when_search_has_a_match_it_returns_an_array
-    result = @palindrome.search @text
+    result = Palindrome.search @text
     assert_kind_of Array, result
   end
   
   def test_that_search_finds_palindromes_from_a_long_string
-    result = @palindrome.search @text
+    result = Palindrome.search @text
     assert result.include?("ala")
     assert result.include?("edde")
     assert result.include?("heseh")
   end
   
   def test_that_search_handles_spaces_in_text
-    result = @palindrome.search "h  e ye   h"
+    result = Palindrome.search "h  e ye   h"
     assert_equal ["eye", "heyeh"], result
   end
   
   def test_that_search_detects_even_and_odd_palindromes_together
-    result = @palindrome.search "yetteyahat"
+    result = Palindrome.search "yetteyahat"
     assert_equal ["aha", "ette", "yettey"], result
   end
   
   def test_that_search_detects_odd_palindromes
-    result = @palindrome.search "aha"
+    result = Palindrome.search "aha"
     assert_equal ["aha"], result
   end
   
   def test_that_search_detects_even_palindromes
-    result = @palindrome.search "ahha"
+    result = Palindrome.search "ahha"
     assert_equal ["ahha"], result
   end
   
   def test_that_search_strips_non_text_characters
-    result = @palindrome.search "My life close twice--before its close. Ye. Tte! Y?"
+    result = Palindrome.search "My life close twice--before its close. Ye. Tte! Y?"
     assert_equal ["ebe", "eye", "ette", "yettey"], result
   end
   
   def test_that_search_responds_when_none_found
-    result = @palindrome.search "nopalindromesinthisstring"
+    result = Palindrome.search "nopalindromesinthisstring"
     assert_equal "No palindromes found.", result
   end
   
   def test_that_search_responds_to_empty_string
-    result = @palindrome.search ""
+    result = Palindrome.search ""
     assert_equal "No palindromes found.", result
   end
   
   def test_that_search_does_not_loop_past_beginning_of_array_for_false_positives
-    assert @palindrome.search("x0xx0x0xx0x0xx0x").all? { |word| word.length > 2 }
+    assert Palindrome.search("x0xx0x0xx0x0xx0x").all? { |word| word.length > 2 }
   end
   
   def test_that_search_does_not_loop_past_end_of_array_for_false_positive
-    result = @palindrome.search "yetteyaha"
+    result = Palindrome.search "yetteyaha"
     assert_equal ["aha", "ette", "yettey"], result
   end
   
-  def test_that_longest_finds_matching_string
-    @palindrome.search @text
-    assert_equal "ranynar", @palindrome.longest
-  end
-
-  def test_that_longest_responds_without_search
-    assert_match /search for palindromes before/, @palindrome.longest
+  def test_that_search_detects_numeric_palindromes
+    result = Palindrome.search "49012345432183"
+    assert_equal ["454", "34543", "2345432", "123454321"], result
   end
 end
