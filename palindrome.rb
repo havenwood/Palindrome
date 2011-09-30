@@ -15,7 +15,7 @@ module PalindromeFinder
   
   def initialize_palindromes string
     @array = string.to_s.downcase.gsub(/[^0-9a-z]/, '').split ''
-    @@palindromes = []
+    @palindromes = []
   end
   
   def find_palindromes
@@ -27,15 +27,15 @@ module PalindromeFinder
   end
   
   def return_palindromes
-    return "No palindromes found." if @@palindromes.empty?
-    @@palindromes.uniq.sort.sort_by &:size
+    return "No palindromes found." if @palindromes.empty?
+    @palindromes.uniq.sort.sort_by &:size
   end
   
   def find_even_palindromes
     @reach = 1
     while @array[looking_here_before] == @array[looking_forward]
       unless looking_here_before < 0 || @reach == 1
-        @@palindromes << @array[looking_here_before, @reach * 2].join
+        @palindromes << @array[looking_here_before, @reach * 2].join
       end
       @reach += 1
     end
@@ -45,7 +45,7 @@ module PalindromeFinder
     @reach = 1
     while @array[looking_back] == @array[looking_forward]
       unless looking_back < 0
-        @@palindromes << @array[looking_back, @reach * 2 + 1].join
+        @palindromes << @array[looking_back, @reach * 2 + 1].join
       end
       @reach += 1
     end
