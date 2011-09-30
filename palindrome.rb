@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-gem "minitest"
 require "minitest/autorun"
 require "minitest/pride"
 
@@ -13,10 +12,7 @@ module PalindromeFinder
   private
   
   def initialize_palindromes string
-    unless string.is_a? String
-      raise ArgumentError, "expected String, recieved #{string.class}"
-    end
-    @array = string.downcase.gsub(/[^0-9a-z]/, '').split ''
+    @array = string.to_s.downcase.gsub(/[^0-9a-z]/, '').split ''
     @@palindromes = []
   end
   
