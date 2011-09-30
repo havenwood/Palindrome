@@ -1,4 +1,4 @@
-Simple Ruby script to parse strings for palindromes.
+Simple Ruby script to search for palindromes.
 
 Palindrome.search "I would be happy, if I had a Hi-Fi"
 #=> ["ada", "ifi", "hadah", "ihadahi", "fihadahif", "ifihadahifi"]
