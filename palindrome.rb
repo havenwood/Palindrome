@@ -117,6 +117,11 @@ class TestPalindrome < MiniTest::Unit::TestCase
     assert_equal "No palindromes found.", result
   end
   
+  def test_three_digit_fixnum_palindromes
+    result = PalindromeFinder.search 333
+    assert_equal "333", result
+  end
+  
   def test_that_search_does_not_loop_past_beginning_of_array_for_false_positives
     assert PalindromeFinder.search("x0xx0x0xx0x0xx0x").all? { |word| word.length > 2 }
   end
