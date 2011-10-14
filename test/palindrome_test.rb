@@ -1,7 +1,9 @@
+#!/usr/bin/env ruby
 require "rubygems"
 gem "minitest"
 require "minitest/autorun"
 require "minitest/pride"
+require "../palindrome.rb"
 
 class TestPalindrome < MiniTest::Unit::TestCase
   def setup
