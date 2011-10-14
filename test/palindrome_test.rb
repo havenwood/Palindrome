@@ -42,6 +42,11 @@ class TestPalindrome < MiniTest::Unit::TestCase
     assert_equal ["ahha"], result
   end
   
+  def test_that_search_detects_a_runon_even_and_odd_palindrome
+    result = PalindromeFinder.search "55555"
+    assert_equal ["555", "5555", "55555"], result
+  end
+  
   def test_that_search_strips_non_text_characters
     result = PalindromeFinder.search "My life close twice--before its close. Ye. Tte! Y?"
     assert_equal ["ebe", "eye", "ette", "yettey"], result
@@ -58,8 +63,8 @@ class TestPalindrome < MiniTest::Unit::TestCase
   end
   
   def test_three_digit_fixnum_palindromes
-    result = PalindromeFinder.search 333
-    assert_equal "333", result
+    result = PalindromeFinder.search "ooo"
+    assert_equal ["ooo"], result
   end
   
   def test_that_search_does_not_loop_past_beginning_of_array_for_false_positives
