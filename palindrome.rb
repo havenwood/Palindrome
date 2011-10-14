@@ -38,16 +38,16 @@ end
 
 class PalindromeFinder
   class << self
-    def search string
-      initialize_palindromes string
+    def search file
+      initialize_palindromes file
       find_palindromes
       return_palindromes
     end
 
     private
   
-    def initialize_palindromes string
-      @array = string.to_s.downcase.gsub(/[^0-9a-z]/, '').each_char.to_a
+    def initialize_palindromes file
+      @array = IO.read(file).to_s.downcase.gsub(/[^0-9a-z]/, '').delete('\n').split ''
       @palindromes = []
     end
     
@@ -69,4 +69,6 @@ class PalindromeFinder
   end
 end
 
-puts PalindromeFinder.search ARGV
+filename = ARGV.first
+fail "palindrome [file ...]" if filename.nil?
+puts PalindromeFinder.search filename
