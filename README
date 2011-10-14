@@ -1,4 +1,3 @@
-Simple Ruby script to search for palindromes.
+Command line tool to search text files for palindromes.
 
-PalindromeFinder.search "I would be happy, if I had a Hi-Fi"
-#=> ["ada", "ifi", "hadah", "ihadahi", "fihadahif", "ifihadahifi"]
+./palindrome.rb text.txt  # returns a list of palindromes found in text.txt
