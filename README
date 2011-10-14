@@ -1,3 +1,11 @@
 Command line tool to search text files for palindromes.
 
-./palindrome.rb text.txt  # returns a list of palindromes found in text.txt
+./palindrome.rb sample.txt
+
+#=>
+ada
+ifi
+hadah
+ihadahi
+fihadahif
+ifihadahifi
