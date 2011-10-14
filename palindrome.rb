@@ -2,6 +2,7 @@
 
 module FindPalindromes
   def find_odd_palindromes
+    @reach = 1
     while @array[looking_back] == @array[looking_forward]
       unless looking_back < 0
         @palindromes << @array[looking_back, @reach * 2 + 1].join
@@ -11,6 +12,7 @@ module FindPalindromes
   end
   
   def find_even_palindromes
+    @reach = 1
     while @array[looking_here_before] == @array[looking_forward]
       unless looking_here_before < 0 || @reach == 1
         @palindromes << @array[looking_here_before, @reach * 2].join
@@ -55,7 +57,6 @@ class PalindromeFinder
     def find_palindromes
       @array.size.times do |spot|
         @spot = spot
-        @reach = 1
         find_odd_palindromes 
         find_even_palindromes     
       end
