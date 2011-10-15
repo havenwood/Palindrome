@@ -70,5 +70,5 @@ class PalindromeFinder
 end
 
 filename = ARGV.first
-fail "palindrome [file ...]" if filename.nil?
+fail "./palindrome.rb [file ...]" if filename.nil?
 puts PalindromeFinder.search filename
