@@ -1,5 +1,5 @@
 task :default => [:test]
 
 task :test do
-  ruby "test/palindrome_test.rb"
+  ruby "palindrome_test.rb sample.txt" 
 end
