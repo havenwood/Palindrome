@@ -57,8 +57,8 @@ class PalindromeFinder
     def find_palindromes
       @array.size.times do |spot|
         @spot = spot
-        find_odd_palindromes 
-        find_even_palindromes     
+        find_odd_palindromes
+        find_even_palindromes
       end
     end
         
